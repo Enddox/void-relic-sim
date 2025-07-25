@@ -7,7 +7,6 @@ Void Relic Sim is a simple web app that simulates opening Warframe Void Relics. 
 - Simulate opening any supported relic for up to 4 players.
 - Choose refinement level: Intact, Exceptional, Flawless, or Radiant.
 - See random rewards based on official drop chances and item rarities.
-- Add new relics and customize their rewards directly from the web interface.
 - Simple, clean UI styled for Warframe fans.
 - Drop colors: Common = bronze, Uncommon = silver, Rare = gold.
 
@@ -16,7 +15,7 @@ Void Relic Sim is a simple web app that simulates opening Warframe Void Relics. 
 2. For each player, choose the relic and refinement level.
 3. Click "Simulate Opening" to see the results for each player.
 4. Rewards are randomly selected based on the chosen refinement and official drop rates.
-5. You can add new relics and their rewards using the "Add New Relic" section.
+5. To add new relics, edit the `RELICS` dictionary in `app.py` as the developer.
 
 ## Technologies Used
 - Python (Flask)
@@ -35,8 +34,7 @@ Void Relic Sim is a simple web app that simulates opening Warframe Void Relics. 
 4. Open your browser and go to `http://localhost:5000`
 
 ## Customization
-- You can add new relics and their rewards from the web interface.
-- To change the default relics, edit the `RELICS` dictionary in `app.py`.
+- To add or change relics and their rewards, edit the `RELICS` dictionary in `app.py`.
 
 ## License
 MIT License. See LICENSE file for details.
