@@ -9,7 +9,15 @@ echo - Python is installed (https://www.python.org/downloads/)
 echo - Python and pip are added to your system PATH
 echo - You may need to restart your computer after installing Python
 echo - You may need to run this script as administrator to install packages
+echo - app.py is in the same folder as this script
+
 echo.
+if not exist app.py (
+    echo ERROR: app.py not found in this folder. Please make sure app.py is in the same folder as this script.
+    pause
+    exit /b
+)
+
 python --version >nul 2>&1
 IF %ERRORLEVEL% NEQ 0 (
     echo Python is not installed or not in PATH. Please install Python and add it to your PATH.
