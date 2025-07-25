@@ -451,58 +451,6 @@
             color: var(--warframe-silver);
             font-size: 0.9rem;
         }
-        
-        .add-relic-section {
-            margin-top: 40px;
-            background: rgba(10, 10, 26, 0.8);
-            border: 1px solid var(--warframe-accent);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 0 20px rgba(74, 157, 227, 0.2);
-        }
-        
-        .add-relic-form {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .form-full {
-            grid-column: span 2;
-        }
-        
-        @media (max-width: 600px) {
-            .add-relic-form {
-                grid-template-columns: 1fr;
-            }
-            .form-full {
-                grid-column: span 1;
-            }
-        }
-        
-        .submit-btn {
-            padding: 12px;
-            background: linear-gradient(135deg, var(--warframe-gold), #a88d2a);
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .submit-btn:hover {
-            background: linear-gradient(135deg, #d9c456, #b99d30);
-            box-shadow: 0 0 10px rgba(201, 176, 56, 0.5);
-        }
-        
-        .success-message {
-            text-align: center;
-            color: #4caf50;
-            margin-top: 15px;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -653,36 +601,6 @@
             </div>
         </div>
         
-        <div class="add-relic-section">
-            <div class="section-title">Add New Relic</div>
-            <div class="add-relic-form">
-                <div class="form-group form-full">
-                    <label>Relic Name</label>
-                    <input type="text" id="relic-name" placeholder="E.g.: Neo V7">
-                </div>
-                
-                <div class="form-group">
-                    <label>Common Rewards (comma separated)</label>
-                    <input type="text" id="relic-commons" placeholder="Forma Blueprint, Item 1, Item 2">
-                </div>
-                
-                <div class="form-group">
-                    <label>Uncommon Rewards (comma separated)</label>
-                    <input type="text" id="relic-uncommons" placeholder="Item 3, Item 4">
-                </div>
-                
-                <div class="form-group">
-                    <label>Rare Rewards (comma separated)</label>
-                    <input type="text" id="relic-rares" placeholder="Legendary Item">
-                </div>
-                
-                <div class="form-group form-full">
-                    <button class="submit-btn" id="add-relic">Add Relic</button>
-                    <div class="success-message" id="success-message">Relic added successfully!</div>
-                </div>
-            </div>
-        </div>
-        
         <div class="footer">
             <p>Void Relic Simulator - Warframe © 2023</p>
             <p>This is an unofficial fan-made tool. Warframe is a registered trademark of Digital Extremes.</p>
@@ -750,7 +668,7 @@
                     body: JSON.stringify({ players })
                 })
                 .then(response => response.json())
-        .then(data => displayResults(data))
+                .then(data => displayResults(data))
                 .catch(error => {
                     console.error('Error:', error);
                     loadingElement.style.display = 'none';
@@ -800,68 +718,6 @@
                 loadingElement.style.display = 'none';
                 resultsElement.style.display = 'block';
             }
-            
-            
-            // Add relic functionality
-            const addRelicBtn = document.getElementById('add-relic');
-            const successMessage = document.getElementById('success-message');
-            
-            addRelicBtn.addEventListener('click', () => {
-                const relicName = document.getElementById('relic-name').value;
-                const commons = document.getElementById('relic-commons').value.split(',').map(item => item.trim());
-                const uncommons = document.getElementById('relic-uncommons').value.split(',').map(item => item.trim());
-                const rares = document.getElementById('relic-rares').value.split(',').map(item => item.trim());
-                
-                if (!relicName || commons.length === 0 || uncommons.length === 0 || rares.length === 0) {
-                    alert('Please complete all fields');
-                    return;
-                }
-                
-                fetch('/add_relic', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name: relicName,
-                        commons: commons,
-                        uncommons: uncommons,
-                        rares: rares
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Update relic selects
-                        const relicSelects = document.querySelectorAll('.relic-select');
-                        relicSelects.forEach(select => {
-                            select.innerHTML = '';
-                            data.relics.forEach(relic => {
-                                const option = document.createElement('option');
-                                option.value = relic;
-                                option.textContent = relic;
-                                select.appendChild(option);
-                            });
-                        });
-                        
-                        // Show success message
-                        successMessage.style.display = 'block';
-                        setTimeout(() => {
-                            successMessage.style.display = 'none';
-                        }, 3000);
-                        
-                        // Clear form
-                        document.getElementById('relic-name').value = '';
-                        document.getElementById('relic-commons').value = '';
-                        document.getElementById('relic-uncommons').value = '';
-                        document.getElementById('relic-rares').value = '';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error adding relic. Please try again.');
-                });
-            });
         });
     </script>
 </body>
