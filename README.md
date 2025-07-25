@@ -1,13 +1,15 @@
+
 # void-relic-sim
 
-Void Relic Sim is a simple web app that simulates opening Warframe Void Relics. You can select the relic (currently only Axi Y1), choose the refinement level, and see what rewards you would get, just like in the real game.
+Void Relic Sim is a simple web app that simulates opening Warframe Void Relics. You can select the relic, choose the refinement level, and see what rewards you would get, just like in the real game.
 
 ## Features
-- Simulate opening the Axi Y1 relic for up to 4 players.
+- Simulate opening any supported relic for up to 4 players.
 - Choose refinement level: Intact, Exceptional, Flawless, or Radiant.
 - See random rewards based on official drop chances and item rarities.
 - Add new relics and customize their rewards directly from the web interface.
-- Modern, responsive UI styled for Warframe fans.
+- Simple, clean UI styled for Warframe fans.
+- Drop colors: Common = bronze, Uncommon = silver, Rare = gold.
 
 ## How It Works
 1. Select the number of players (1-4).
