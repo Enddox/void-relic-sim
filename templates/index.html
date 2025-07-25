@@ -556,24 +556,23 @@
                         <div class="player-card" data-player="1">
                             <div class="player-header">
                                 <div class="player-icon">1</div>
-                                <div class="player-title">Jugador 1</div>
+                                <div class="player-title">Player 1</div>
                             </div>
                             <div class="form-group">
-                                <label>Reliquia Void</label>
+                                <label>Relic</label>
                                 <select class="relic-select" data-player="1">
-                                    <option value="Lith A1">Lith A1</option>
-                                    <option value="Meso B1">Meso B1</option>
-                                    <option value="Neo C1">Neo C1</option>
-                                    <option value="Axi D1">Axi D1</option>
+                                    {% for relic in relics %}
+                                    <option value="{{ relic }}">{{ relic }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Refinamiento</label>
+                                <label>Refinement</label>
                                 <select class="refinement-select" data-player="1">
-                                    <option value="Intacto">Intacto (2% raro)</option>
-                                    <option value="Excepcional">Excepcional (4% raro)</option>
-                                    <option value="Impecable">Impecable (6% raro)</option>
-                                    <option value="Radiante" selected>Radiante (10% raro)</option>
+                                    <option value="Intact">Intact (2% rare)</option>
+                                    <option value="Exceptional">Exceptional (4% rare)</option>
+                                    <option value="Flawless">Flawless (6% rare)</option>
+                                    <option value="Radiant" selected>Radiant (10% rare)</option>
                                 </select>
                             </div>
                         </div>
@@ -582,24 +581,23 @@
                         <div class="player-card" data-player="2" style="display: none;">
                             <div class="player-header">
                                 <div class="player-icon">2</div>
-                                <div class="player-title">Jugador 2</div>
+                                <div class="player-title">Player 2</div>
                             </div>
                             <div class="form-group">
-                                <label>Reliquia Void</label>
+                                <label>Relic</label>
                                 <select class="relic-select" data-player="2">
-                                    <option value="Lith A1">Lith A1</option>
-                                    <option value="Meso B1">Meso B1</option>
-                                    <option value="Neo C1">Neo C1</option>
-                                    <option value="Axi D1">Axi D1</option>
+                                    {% for relic in relics %}
+                                    <option value="{{ relic }}">{{ relic }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Refinamiento</label>
+                                <label>Refinement</label>
                                 <select class="refinement-select" data-player="2">
-                                    <option value="Intacto">Intacto (2% raro)</option>
-                                    <option value="Excepcional">Excepcional (4% raro)</option>
-                                    <option value="Impecable">Impecable (6% raro)</option>
-                                    <option value="Radiante" selected>Radiante (10% raro)</option>
+                                    <option value="Intact">Intact (2% rare)</option>
+                                    <option value="Exceptional">Exceptional (4% rare)</option>
+                                    <option value="Flawless">Flawless (6% rare)</option>
+                                    <option value="Radiant" selected>Radiant (10% rare)</option>
                                 </select>
                             </div>
                         </div>
@@ -610,24 +608,23 @@
                         <div class="player-card" data-player="3" style="display: none;">
                             <div class="player-header">
                                 <div class="player-icon">3</div>
-                                <div class="player-title">Jugador 3</div>
+                                <div class="player-title">Player 3</div>
                             </div>
                             <div class="form-group">
-                                <label>Reliquia Void</label>
+                                <label>Relic</label>
                                 <select class="relic-select" data-player="3">
-                                    <option value="Lith A1">Lith A1</option>
-                                    <option value="Meso B1">Meso B1</option>
-                                    <option value="Neo C1">Neo C1</option>
-                                    <option value="Axi D1">Axi D1</option>
+                                    {% for relic in relics %}
+                                    <option value="{{ relic }}">{{ relic }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Refinamiento</label>
+                                <label>Refinement</label>
                                 <select class="refinement-select" data-player="3">
-                                    <option value="Intacto">Intacto (2% raro)</option>
-                                    <option value="Excepcional">Excepcional (4% raro)</option>
-                                    <option value="Impecable">Impecable (6% raro)</option>
-                                    <option value="Radiante" selected>Radiante (10% raro)</option>
+                                    <option value="Intact">Intact (2% rare)</option>
+                                    <option value="Exceptional">Exceptional (4% rare)</option>
+                                    <option value="Flawless">Flawless (6% rare)</option>
+                                    <option value="Radiant" selected>Radiant (10% rare)</option>
                                 </select>
                             </div>
                         </div>
@@ -636,24 +633,23 @@
                         <div class="player-card" data-player="4" style="display: none;">
                             <div class="player-header">
                                 <div class="player-icon">4</div>
-                                <div class="player-title">Jugador 4</div>
+                                <div class="player-title">Player 4</div>
                             </div>
                             <div class="form-group">
-                                <label>Reliquia Void</label>
+                                <label>Relic</label>
                                 <select class="relic-select" data-player="4">
-                                    <option value="Lith A1">Lith A1</option>
-                                    <option value="Meso B1">Meso B1</option>
-                                    <option value="Neo C1">Neo C1</option>
-                                    <option value="Axi D1">Axi D1</option>
+                                    {% for relic in relics %}
+                                    <option value="{{ relic }}">{{ relic }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Refinamiento</label>
+                                <label>Refinement</label>
                                 <select class="refinement-select" data-player="4">
-                                    <option value="Intacto">Intacto (2% raro)</option>
-                                    <option value="Excepcional">Excepcional (4% raro)</option>
-                                    <option value="Impecable">Impecable (6% raro)</option>
-                                    <option value="Radiante" selected>Radiante (10% raro)</option>
+                                    <option value="Intact">Intact (2% rare)</option>
+                                    <option value="Exceptional">Exceptional (4% rare)</option>
+                                    <option value="Flawless">Flawless (6% rare)</option>
+                                    <option value="Radiant" selected>Radiant (10% rare)</option>
                                 </select>
                             </div>
                         </div>

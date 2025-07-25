@@ -21,6 +21,20 @@ RELICS = {
         "Rare": [
             "Yareli Prime Systems Blueprint"
         ]
+    },
+    "Lith Y1": {
+        "Common": [
+            "Lex Prime Barrel",
+            "Braton Prime Blueprint",
+            "Nautilus Prime Carapace"
+        ],
+        "Uncommon": [
+            "Zylok Prime Receiver",
+            "Trumna Prime Stock"
+        ],
+        "Rare": [
+            "Yareli Prime Neuroptics Blueprint"
+        ]
     }
 }
 
