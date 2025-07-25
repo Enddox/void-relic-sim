@@ -8,30 +8,19 @@ import os
 app = Flask(__name__)
 
 RELICS = {
-    "Lith A1": {
-        "Common": ["Forma Blueprint", "Loki Prime Neuroptics", "Bo Prime Handle"],
-        "Uncommon": ["Wyrm Prime Cerebrum", "Odonata Prime Wings"],
-        "Rare": ["Loki Prime Blueprint"]
-    },
-    "Meso B1": {
-        "Common": ["Forma Blueprint", "Ember Prime Neuroptics", "Glaive Prime Blade"],
-        "Uncommon": ["Soma Prime Stock", "Hikou Prime Pouch"],
-        "Rare": ["Frost Prime Systems"]
-    },
-    "Neo C1": {
-        "Common": ["Forma Blueprint", "Rhino Prime Chassis", "Boltor Prime Barrel"],
-        "Uncommon": ["Scindo Prime Blade", "Lex Prime Receiver"],
-        "Rare": ["Nyx Prime Blueprint"]
-    },
-    "Axi D1": {
-        "Common": ["Forma Blueprint", "Saryn Prime Chassis", "Vasto Prime Barrel"],
-        "Uncommon": ["Nikana Prime Blade", "Vauban Prime Neuroptics"],
-        "Rare": ["Ivara Prime Blueprint"]
-    },
     "Axi Y1": {
-        "Common": ["Forma Blueprint", "Paris Prime String", "Carrier Prime Cerebrum"],
-        "Uncommon": ["Akstiletto Prime Barrel", "Vauban Prime Chassis"],
-        "Rare": ["Ymir Prime Blueprint"]
+        "Common": [
+            "Sevagoth Prime Neuroptics Blueprint",
+            "Fang Prime Blueprint",
+            "Forma Blueprint"
+        ],
+        "Uncommon": [
+            "Lavos Prime Blueprint",
+            "Paris Prime Upper Limb"
+        ],
+        "Rare": [
+            "Yareli Prime Systems Blueprint"
+        ]
     }
 }
 
