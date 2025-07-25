@@ -2,6 +2,9 @@
 REM Warframe Void Relics Simulator - First Time Setup Script
 REM This script installs Flask (if needed) and runs the app.
 
+REM Change to the folder where this script is located
+cd /d "%~dp0"
+
 echo === Warframe Void Relics Simulator Setup ===
 echo.
 echo Please make sure:
