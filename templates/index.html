@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Reliquias Void - Warframe</title>
+    <title>Void Relic Simulator - Warframe</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -532,16 +532,16 @@
 <body>
     <div class="container">
         <header>
-            <h1>Simulador de Reliquias Void</h1>
-            <p class="subtitle">Simula aperturas de reliquias void con hasta 4 jugadores, como en el juego real. Selecciona las reliquias, el refinamiento y descubre qué recompensas obtendrías.</p>
+            <h1>Void Relic Simulator</h1>
+            <p class="subtitle">Simulate opening void relics with up to 4 players, just like in the real game. Select relics, refinement, and see what rewards you would get.</p>
         </header>
         
         <div class="simulator-container">
             <div class="controls">
-                <div class="section-title">Configuración de la Misión</div>
+                <div class="section-title">Mission Setup</div>
                 
                 <div class="player-selector">
-                    <label>Número de Jugadores:</label>
+                    <label>Number of Players:</label>
                     <div class="player-count">
                         <div class="player-btn active" data-players="1">1</div>
                         <div class="player-btn" data-players="2">2</div>
@@ -660,7 +660,7 @@
                     </div>
                 </div>
                 
-                <button class="simulate-btn" id="simulate">Simular Apertura</button>
+                <button class="simulate-btn" id="simulate">Simulate Opening</button>
             </div>
             
             <div class="results-container">
@@ -671,8 +671,8 @@
                 </div>
                 <div class="results-content" id="results">
                     <div class="results-header">
-                        <h2 class="results-title">Resultados de la Misión</h2>
-                        <p>Selecciona la recompensa que deseas conservar</p>
+                        <h2 class="results-title">Mission Results</h2>
+                        <p>Select the reward you want to keep</p>
                     </div>
                     <div class="results-grid" id="results-grid">
                         <!-- Results will be inserted here by JavaScript -->
@@ -682,38 +682,38 @@
         </div>
         
         <div class="add-relic-section">
-            <div class="section-title">Añadir Nueva Reliquia</div>
+            <div class="section-title">Add New Relic</div>
             <div class="add-relic-form">
                 <div class="form-group form-full">
-                    <label>Nombre de la Reliquia</label>
-                    <input type="text" id="relic-name" placeholder="Ej: Neo V7">
+                    <label>Relic Name</label>
+                    <input type="text" id="relic-name" placeholder="E.g.: Neo V7">
                 </div>
                 
                 <div class="form-group">
-                    <label>Recompensas Comunes (separadas por coma)</label>
+                    <label>Common Rewards (comma separated)</label>
                     <input type="text" id="relic-commons" placeholder="Forma Blueprint, Item 1, Item 2">
                 </div>
                 
                 <div class="form-group">
-                    <label>Recompensas Incomunes (separadas por coma)</label>
+                    <label>Uncommon Rewards (comma separated)</label>
                     <input type="text" id="relic-uncommons" placeholder="Item 3, Item 4">
                 </div>
                 
                 <div class="form-group">
-                    <label>Recompensas Raras (separadas por coma)</label>
-                    <input type="text" id="relic-rares" placeholder="Item Legendario">
+                    <label>Rare Rewards (comma separated)</label>
+                    <input type="text" id="relic-rares" placeholder="Legendary Item">
                 </div>
                 
                 <div class="form-group form-full">
-                    <button class="submit-btn" id="add-relic">Añadir Reliquia</button>
-                    <div class="success-message" id="success-message">¡Reliquia añadida con éxito!</div>
+                    <button class="submit-btn" id="add-relic">Add Relic</button>
+                    <div class="success-message" id="success-message">Relic added successfully!</div>
                 </div>
             </div>
         </div>
         
         <div class="footer">
-            <p>Simulador de Reliquias Void - Warframe © 2023</p>
-            <p>Esta es una herramienta no oficial creada por fans. Warframe es una marca registrada de Digital Extremes.</p>
+            <p>Void Relic Simulator - Warframe © 2023</p>
+            <p>This is an unofficial fan-made tool. Warframe is a registered trademark of Digital Extremes.</p>
         </div>
     </div>
     
@@ -782,7 +782,7 @@
                 .catch(error => {
                     console.error('Error:', error);
                     loadingElement.style.display = 'none';
-                    alert('Error al simular las aperturas. Por favor intenta de nuevo.');
+                    alert('Error simulating openings. Please try again.');
                 });
             });
             
@@ -822,7 +822,7 @@
                         this.classList.add('selected');
                         const playerNum = this.getAttribute('data-player');
                         const item = results[playerNum - 1].item;
-                        alert(`¡Has seleccionado la recompensa del Jugador ${playerNum}: ${item}`);
+                        alert(`You selected Player ${playerNum}'s reward: ${item}`);
                     });
                 });
                 loadingElement.style.display = 'none';
@@ -841,7 +841,7 @@
                 const rares = document.getElementById('relic-rares').value.split(',').map(item => item.trim());
                 
                 if (!relicName || commons.length === 0 || uncommons.length === 0 || rares.length === 0) {
-                    alert('Por favor completa todos los campos');
+                    alert('Please complete all fields');
                     return;
                 }
                 
@@ -887,7 +887,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error al añadir la reliquia. Por favor intenta de nuevo.');
+                    alert('Error adding relic. Please try again.');
                 });
             });
         });
