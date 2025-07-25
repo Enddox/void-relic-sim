@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Reliquias Void - Warframe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --warframe-primary: #0a0a1a;
+            --warframe-secondary: #1a1a3a;
+            --warframe-accent: #4a9de3;
+            --warframe-gold: #c9b038;
+            --warframe-silver: #c0c0c0;
+            --warframe-bronze: #cd7f32;
+            --common-color: #ffffff;
+            --uncommon-color: #4a9de3;
+            --rare-color: #ffcc00;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #232946, #121629);
+            color: #fff;
+            min-height: 100vh;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+            opacity: 0.18;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid var(--warframe-accent);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: var(--warframe-gold);
+            border-radius: 2px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            color: var(--warframe-accent);
+            text-shadow: 0 0 10px rgba(74, 157, 227, 0.7);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--warframe-silver);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .simulator-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 900px) {
+            .simulator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .controls {
+            background: rgba(10, 10, 26, 0.8);
+            border: 1px solid var(--warframe-accent);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(74, 157, 227, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--warframe-accent);
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: var(--warframe-accent);
+        }
+        
+        .player-selector {
+            margin-bottom: 25px;
+        }
+        
+        .player-count {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .player-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--warframe-secondary);
+            border: 2px solid var(--warframe-accent);
+            color: var(--warframe-accent);
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .player-btn.active {
+            background: var(--warframe-accent);
+            color: var(--warframe-primary);
+            box-shadow: 0 0 15px rgba(74, 157, 227, 0.7);
+        }
+        
+        .player-btn:hover:not(.active) {
+            background: rgba(74, 157, 227, 0.3);
+        }
+        
+        .player-config {
+            margin-top: 30px;
+        }
+        
+        .player-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .player-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .player-card {
+            background: rgba(26, 26, 58, 0.7);
+            border: 1px solid var(--warframe-accent);
+            border-radius: 8px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .player-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--warframe-accent);
+        }
+        
+        .player-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .player-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--warframe-secondary);
+            border: 2px solid var(--warframe-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            color: var(--warframe-accent);
+        }
+        
+        .player-title {
+            font-size: 1.2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--warframe-silver);
+            font-size: 0.9rem;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(10, 10, 26, 0.7);
+            border: 1px solid var(--warframe-accent);
+            border-radius: 5px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--warframe-gold);
+            box-shadow: 0 0 5px rgba(201, 176, 56, 0.5);
+        }
+        
+        .simulate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--warframe-accent), #2a6ca8);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .simulate-btn::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -50%;
+            width: 50%;
+            height: 150%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(25deg);
+            transition: all 0.5s ease;
+        }
+        
+        .simulate-btn:hover {
+            background: linear-gradient(135deg, #5aaef0, #3a8cd8);
+            box-shadow: 0 0 20px rgba(74, 157, 227, 0.7);
+        }
+        
+        .simulate-btn:hover::before {
+            left: 150%;
+        }
+        
+        .results-container {
+            background: rgba(10, 10, 26, 0.8);
+            border: 1px solid var(--warframe-accent);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(74, 157, 227, 0.2);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(74, 157, 227, 0.3);
+            border-top: 5px solid var(--warframe-accent);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .results-content {
+            flex: 1;
+            display: none;
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .results-title {
+            font-size: 2rem;
+            color: var(--warframe-accent);
+            margin-bottom: 10px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        
+        @media (max-width: 1200px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .result-card {
+            background: rgba(26, 26, 58, 0.7);
+            border: 1px solid var(--warframe-accent);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(74, 157, 227, 0.3);
+        }
+        
+        .player-result-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--warframe-secondary);
+            border: 2px solid var(--warframe-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--warframe-accent);
+        }
+        
+        .result-title {
+            font-size: 1.3rem;
+        }
+        
+        .relic-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--warframe-silver);
+        }
+        
+        .relic-name {
+            font-weight: bold;
+        }
+        
+        .result-item {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .common {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--common-color);
+            color: var(--common-color);
+        }
+        
+        .uncommon {
+            background: rgba(74, 157, 227, 0.1);
+            border: 2px solid var(--uncommon-color);
+            color: var(--uncommon-color);
+        }
+        
+        .rare {
+            background: rgba(255, 204, 0, 0.1);
+            border: 2px solid var(--rare-color);
+            color: var(--rare-color);
+        }
+        
+        .result-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1));
+            z-index: -1;
+        }
+        
+        .choose-item {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(201, 176, 56, 0.1);
+            border: 1px solid var(--warframe-gold);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .choose-item:hover {
+            background: rgba(201, 176, 56, 0.3);
+        }
+        
+        .choose-item.selected {
+            background: rgba(201, 176, 56, 0.5);
+            box-shadow: 0 0 10px rgba(201, 176, 56, 0.5);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(74, 157, 227, 0.3);
+            color: var(--warframe-silver);
+            font-size: 0.9rem;
+        }
+        
+        .add-relic-section {
+            margin-top: 40px;
+            background: rgba(10, 10, 26, 0.8);
+            border: 1px solid var(--warframe-accent);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(74, 157, 227, 0.2);
+        }
+        
+        .add-relic-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .form-full {
+            grid-column: span 2;
+        }
+        
+        @media (max-width: 600px) {
+            .add-relic-form {
+                grid-template-columns: 1fr;
+            }
+            .form-full {
+                grid-column: span 1;
+            }
+        }
+        
+        .submit-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, var(--warframe-gold), #a88d2a);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #d9c456, #b99d30);
+            box-shadow: 0 0 10px rgba(201, 176, 56, 0.5);
+        }
+        
+        .success-message {
+            text-align: center;
+            color: #4caf50;
+            margin-top: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simulador de Reliquias Void</h1>
+            <p class="subtitle">Simula aperturas de reliquias void con hasta 4 jugadores, como en el juego real. Selecciona las reliquias, el refinamiento y descubre qué recompensas obtendrías.</p>
+        </header>
+        
+        <div class="simulator-container">
+            <div class="controls">
+                <div class="section-title">Configuración de la Misión</div>
+                
+                <div class="player-selector">
+                    <label>Número de Jugadores:</label>
+                    <div class="player-count">
+                        <div class="player-btn active" data-players="1">1</div>
+                        <div class="player-btn" data-players="2">2</div>
+                        <div class="player-btn" data-players="3">3</div>
+                        <div class="player-btn" data-players="4">4</div>
+                    </div>
+                </div>
+                
+                <div class="player-config">
+                    <div class="player-cards">
+                        <!-- Player 1 -->
+                        <div class="player-card" data-player="1">
+                            <div class="player-header">
+                                <div class="player-icon">1</div>
+                                <div class="player-title">Jugador 1</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Reliquia Void</label>
+                                <select class="relic-select" data-player="1">
+                                    <option value="Lith A1">Lith A1</option>
+                                    <option value="Meso B1">Meso B1</option>
+                                    <option value="Neo C1">Neo C1</option>
+                                    <option value="Axi D1">Axi D1</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Refinamiento</label>
+                                <select class="refinement-select" data-player="1">
+                                    <option value="Intacto">Intacto (2% raro)</option>
+                                    <option value="Excepcional">Excepcional (4% raro)</option>
+                                    <option value="Impecable">Impecable (6% raro)</option>
+                                    <option value="Radiante" selected>Radiante (10% raro)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Player 2 (hidden by default) -->
+                        <div class="player-card" data-player="2" style="display: none;">
+                            <div class="player-header">
+                                <div class="player-icon">2</div>
+                                <div class="player-title">Jugador 2</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Reliquia Void</label>
+                                <select class="relic-select" data-player="2">
+                                    <option value="Lith A1">Lith A1</option>
+                                    <option value="Meso B1">Meso B1</option>
+                                    <option value="Neo C1">Neo C1</option>
+                                    <option value="Axi D1">Axi D1</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Refinamiento</label>
+                                <select class="refinement-select" data-player="2">
+                                    <option value="Intacto">Intacto (2% raro)</option>
+                                    <option value="Excepcional">Excepcional (4% raro)</option>
+                                    <option value="Impecable">Impecable (6% raro)</option>
+                                    <option value="Radiante" selected>Radiante (10% raro)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="player-cards" style="display: none;">
+                        <!-- Player 3 (hidden by default) -->
+                        <div class="player-card" data-player="3" style="display: none;">
+                            <div class="player-header">
+                                <div class="player-icon">3</div>
+                                <div class="player-title">Jugador 3</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Reliquia Void</label>
+                                <select class="relic-select" data-player="3">
+                                    <option value="Lith A1">Lith A1</option>
+                                    <option value="Meso B1">Meso B1</option>
+                                    <option value="Neo C1">Neo C1</option>
+                                    <option value="Axi D1">Axi D1</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Refinamiento</label>
+                                <select class="refinement-select" data-player="3">
+                                    <option value="Intacto">Intacto (2% raro)</option>
+                                    <option value="Excepcional">Excepcional (4% raro)</option>
+                                    <option value="Impecable">Impecable (6% raro)</option>
+                                    <option value="Radiante" selected>Radiante (10% raro)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Player 4 (hidden by default) -->
+                        <div class="player-card" data-player="4" style="display: none;">
+                            <div class="player-header">
+                                <div class="player-icon">4</div>
+                                <div class="player-title">Jugador 4</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Reliquia Void</label>
+                                <select class="relic-select" data-player="4">
+                                    <option value="Lith A1">Lith A1</option>
+                                    <option value="Meso B1">Meso B1</option>
+                                    <option value="Neo C1">Neo C1</option>
+                                    <option value="Axi D1">Axi D1</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Refinamiento</label>
+                                <select class="refinement-select" data-player="4">
+                                    <option value="Intacto">Intacto (2% raro)</option>
+                                    <option value="Excepcional">Excepcional (4% raro)</option>
+                                    <option value="Impecable">Impecable (6% raro)</option>
+                                    <option value="Radiante" selected>Radiante (10% raro)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="simulate-btn" id="simulate">Simular Apertura</button>
+            </div>
+            
+            <div class="results-container">
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                    <h3>Abriendo reliquias void...</h3>
+                    <p>Recolectando reactante</p>
+                </div>
+                <div class="results-content" id="results">
+                    <div class="results-header">
+                        <h2 class="results-title">Resultados de la Misión</h2>
+                        <p>Selecciona la recompensa que deseas conservar</p>
+                    </div>
+                    <div class="results-grid" id="results-grid">
+                        <!-- Results will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="add-relic-section">
+            <div class="section-title">Añadir Nueva Reliquia</div>
+            <div class="add-relic-form">
+                <div class="form-group form-full">
+                    <label>Nombre de la Reliquia</label>
+                    <input type="text" id="relic-name" placeholder="Ej: Neo V7">
+                </div>
+                
+                <div class="form-group">
+                    <label>Recompensas Comunes (separadas por coma)</label>
+                    <input type="text" id="relic-commons" placeholder="Forma Blueprint, Item 1, Item 2">
+                </div>
+                
+                <div class="form-group">
+                    <label>Recompensas Incomunes (separadas por coma)</label>
+                    <input type="text" id="relic-uncommons" placeholder="Item 3, Item 4">
+                </div>
+                
+                <div class="form-group">
+                    <label>Recompensas Raras (separadas por coma)</label>
+                    <input type="text" id="relic-rares" placeholder="Item Legendario">
+                </div>
+                
+                <div class="form-group form-full">
+                    <button class="submit-btn" id="add-relic">Añadir Reliquia</button>
+                    <div class="success-message" id="success-message">¡Reliquia añadida con éxito!</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Simulador de Reliquias Void - Warframe © 2023</p>
+            <p>Esta es una herramienta no oficial creada por fans. Warframe es una marca registrada de Digital Extremes.</p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Player count selector
+            const playerButtons = document.querySelectorAll('.player-btn');
+            const playerCards = document.querySelectorAll('.player-card');
+            
+            playerButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const playerCount = parseInt(button.getAttribute('data-players'));
+                    
+                    // Update active button
+                    playerButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Show/hide player cards
+                    playerCards.forEach(card => {
+                        const playerNum = parseInt(card.getAttribute('data-player'));
+                        card.style.display = playerNum <= playerCount ? 'block' : 'none';
+                    });
+                    
+                    // Show/hide player card containers
+                    const playerContainers = document.querySelectorAll('.player-cards');
+                    playerContainers[1].style.display = playerCount > 2 ? 'grid' : 'none';
+                });
+            });
+            
+            // Simulate button
+            const simulateBtn = document.getElementById('simulate');
+            const loadingElement = document.getElementById('loading');
+            const resultsElement = document.getElementById('results');
+            const resultsGrid = document.getElementById('results-grid');
+            
+            simulateBtn.addEventListener('click', () => {
+                // Get player count
+                const playerCount = parseInt(document.querySelector('.player-btn.active').getAttribute('data-players'));
+                
+                // Prepare player data
+                const players = [];
+                for (let i = 1; i <= playerCount; i++) {
+                    const relicSelect = document.querySelector(`.relic-select[data-player="${i}"]`);
+                    const refinementSelect = document.querySelector(`.refinement-select[data-player="${i}"]`);
+                    
+                    players.push({
+                        relic: relicSelect.value,
+                        refinement: refinementSelect.value
+                    });
+                }
+                
+                // Show loading
+                loadingElement.style.display = 'block';
+                resultsElement.style.display = 'none';
+                
+                // Simulate relic openings
+                fetch('/simulate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ players })
+                })
+                .then(response => response.json())
+        .then(data => displayResults(data))
+                .catch(error => {
+                    console.error('Error:', error);
+                    loadingElement.style.display = 'none';
+                    alert('Error al simular las aperturas. Por favor intenta de nuevo.');
+                });
+            });
+            
+            function displayResults(results) {
+                resultsGrid.innerHTML = '';
+                results.forEach((result, index) => {
+                    const playerNum = index + 1;
+                    const resultCard = document.createElement('div');
+                    resultCard.className = 'result-card';
+                    resultCard.innerHTML = `
+                        <div class="result-header">
+                            <div class="player-result-icon">${playerNum}</div>
+                            <div class="result-title">Jugador ${playerNum}</div>
+                        </div>
+                        <div class="relic-info">
+                            <div><span class="relic-name">${result.relic}</span></div>
+                            <div>${result.refinement}</div>
+                        </div>
+                        <div class="result-item ${result.color}">
+                            ${result.item}
+                        </div>
+                        <div class="choose-item" data-player="${playerNum}">
+                            Seleccionar esta recompensa
+                        </div>
+                    `;
+            resultsGrid.appendChild(resultCard);
+            resultCard.style.transition = 'opacity 0.6s, transform 0.6s';
+            resultCard.style.opacity = 1;
+            resultCard.style.transform = 'scale(1)';
+                });
+                // Add event listeners to choose buttons
+                document.querySelectorAll('.choose-item').forEach(button => {
+                    button.addEventListener('click', function() {
+                        document.querySelectorAll('.choose-item').forEach(btn => {
+                            btn.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        const playerNum = this.getAttribute('data-player');
+                        const item = results[playerNum - 1].item;
+                        alert(`¡Has seleccionado la recompensa del Jugador ${playerNum}: ${item}`);
+                    });
+                });
+                loadingElement.style.display = 'none';
+                resultsElement.style.display = 'block';
+            }
+            
+            
+            // Add relic functionality
+            const addRelicBtn = document.getElementById('add-relic');
+            const successMessage = document.getElementById('success-message');
+            
+            addRelicBtn.addEventListener('click', () => {
+                const relicName = document.getElementById('relic-name').value;
+                const commons = document.getElementById('relic-commons').value.split(',').map(item => item.trim());
+                const uncommons = document.getElementById('relic-uncommons').value.split(',').map(item => item.trim());
+                const rares = document.getElementById('relic-rares').value.split(',').map(item => item.trim());
+                
+                if (!relicName || commons.length === 0 || uncommons.length === 0 || rares.length === 0) {
+                    alert('Por favor completa todos los campos');
+                    return;
+                }
+                
+                fetch('/add_relic', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: relicName,
+                        commons: commons,
+                        uncommons: uncommons,
+                        rares: rares
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update relic selects
+                        const relicSelects = document.querySelectorAll('.relic-select');
+                        relicSelects.forEach(select => {
+                            select.innerHTML = '';
+                            data.relics.forEach(relic => {
+                                const option = document.createElement('option');
+                                option.value = relic;
+                                option.textContent = relic;
+                                select.appendChild(option);
+                            });
+                        });
+                        
+                        // Show success message
+                        successMessage.style.display = 'block';
+                        setTimeout(() => {
+                            successMessage.style.display = 'none';
+                        }, 3000);
+                        
+                        // Clear form
+                        document.getElementById('relic-name').value = '';
+                        document.getElementById('relic-commons').value = '';
+                        document.getElementById('relic-uncommons').value = '';
+                        document.getElementById('relic-rares').value = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al añadir la reliquia. Por favor intenta de nuevo.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
