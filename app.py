@@ -85,19 +85,6 @@ def simulate():
         })
     return jsonify(results)
 
-@app.route('/add_relic', methods=['POST'])
-def add_relic():
-    data = request.json
-    relic_name = data['name']
-    commons = data['commons']
-    uncommons = data['uncommons']
-    rares = data['rares']
-    RELICS[relic_name] = {
-        "Common": commons,
-        "Uncommon": uncommons,
-        "Rare": rares
-    }
-    return jsonify({"success": True, "relics": list(RELICS.keys())})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
