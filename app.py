@@ -51,40 +51,66 @@ def index():
 
 @app.route('/simulate', methods=['POST'])
 def simulate():
-    data = request.json
-    players = data['players']
-    results = []
-    # Simulate opening for each player
-    for player in players:
-        relic_name = player['relic']
-        refinement = player['refinement']
-        if relic_name not in RELICS:
-            return jsonify({"error": f"Relic {relic_name} not found"}), 400
-        relic = RELICS[relic_name]
-        probs = PROBABILITIES[refinement]
-        # Determine rarity of drop
-        rarity = random.choices(
-            ["Common", "Uncommon", "Rare"],
-            weights=[probs["Common"], probs["Uncommon"], probs["Rare"]],
-            k=1
-        )[0]
-        # Select specific item
-        item = random.choice(relic[rarity])
-        # Color by rarity
-        color = {
-            "Common": "common",
-            "Uncommon": "uncommon",
-            "Rare": "rare"
-        }[rarity]
-        results.append({
-            "relic": relic_name,
-            "refinement": refinement,
-            "rarity": rarity,
-            "item": item,
-            "color": color
-        })
-    return jsonify(results)
+    try:
+        data = request.json
+        if not data or 'players' not in data:
+            return jsonify({"error": "Invalid request data"}), 400
+        
+        players = data['players']
+        results = []
+        
+        # Validar que PROBABILITIES contenga el refinamiento
+        valid_refinements = list(PROBABILITIES.keys())
+        
+        # Simulate opening for each player
+        for player in players:
+            if 'relic' not in player or 'refinement' not in player:
+                return jsonify({"error": "Each player must have 'relic' and 'refinement' fields"}), 400
+                
+            relic_name = player['relic']
+            refinement = player['refinement']
+            
+            if relic_name not in RELICS:
+                return jsonify({"error": f"Relic {relic_name} not found"}), 400
+            
+            if refinement not in PROBABILITIES:
+                return jsonify({"error": f"Invalid refinement {refinement}. Valid options: {valid_refinements}"}), 400
+                
+            relic = RELICS[relic_name]
+            probs = PROBABILITIES[refinement]
+            
+            # Determine rarity of drop
+            rarity = random.choices(
+                ["Common", "Uncommon", "Rare"],
+                weights=[probs["Common"], probs["Uncommon"], probs["Rare"]],
+                k=1
+            )[0]
+            
+            # Select specific item
+            item = random.choice(relic[rarity])
+            
+            # Color by rarity
+            color = {
+                "Common": "common",
+                "Uncommon": "uncommon",
+                "Rare": "rare"
+            }[rarity]
+            
+            results.append({
+                "relic": relic_name,
+                "refinement": refinement,
+                "rarity": rarity,
+                "item": item,
+                "color": color
+            })
+        return jsonify(results)
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    host = os.environ.get('HOST', '0.0.0.0')
+    debug = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'
+    app.run(host=host, port=port, debug=debug)
